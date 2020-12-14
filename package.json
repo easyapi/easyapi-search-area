@@ -1,0 +1,67 @@
+{
+  "name": "easyapi-search-area",
+  "version": "1.0.0",
+  "description": "EasyAPI Vue搜索区域组件",
+  "author": "easyapi",
+  "keywords": [
+    "vue",
+    "json"
+  ],
+  "main": "./src/index.js",
+  "module": "./dist/easyapi-search-area.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/easyapi/easyapi-search-area.git"
+  },
+  "homepage": "https://github.com/easyapi/easyapi-search-area",
+  "bugs": {
+    "url": "https://github.com/easyapi/easyapi-search-area/issues"
+  },
+  "license": "Apache 2",
+  "scripts": {
+    "dev": "webpack-dev-server --open --config webpack.config.js",
+    "example": "rm -rf ./example/dist/*.js && rm -rf ./example/dist/*.html && webpack --progress --config webpack.config.js",
+    "build": "webpack --progress --config webpack.build.js"
+  },
+  "dependencies": {
+    "vue": "^2.6.12"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.9",
+    "@babel/plugin-proposal-class-properties": "^7.12.1",
+    "@babel/plugin-proposal-decorators": "^7.12.1",
+    "@babel/plugin-proposal-do-expressions": "^7.12.1",
+    "@babel/plugin-proposal-export-default-from": "^7.12.1",
+    "@babel/plugin-proposal-export-namespace-from": "^7.12.1",
+    "@babel/plugin-proposal-function-bind": "^7.12.1",
+    "@babel/plugin-proposal-function-sent": "^7.12.1",
+    "@babel/plugin-proposal-json-strings": "^7.12.1",
+    "@babel/plugin-proposal-logical-assignment-operators": "^7.12.1",
+    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.12.1",
+    "@babel/plugin-proposal-numeric-separator": "^7.12.7",
+    "@babel/plugin-proposal-optional-chaining": "^7.12.7",
+    "@babel/plugin-proposal-pipeline-operator": "^7.12.1",
+    "@babel/plugin-proposal-throw-expressions": "^7.12.1",
+    "@babel/plugin-transform-runtime": "^7.12.1",
+    "@babel/preset-env": "^7.12.7",
+    "babel-loader": "^8.2.2",
+    "babel-plugin-component": "^1.1.1",
+    "css-loader": "^5.0.1",
+    "html-webpack-plugin": "^4.5.0",
+    "less": "^3.12.2",
+    "less-loader": "^7.1.0",
+    "resolve-url-loader": "^3.1.2",
+    "style-loader": "^2.0.0",
+    "url-loader": "^4.1.1",
+    "vue-loader": "^15.9.5",
+    "vue-template-compiler": "^2.6.12",
+    "webpack": "4.43.0",
+    "webpack-cli": "3.3.12",
+    "webpack-dev-server": "3.11.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ]
+}
