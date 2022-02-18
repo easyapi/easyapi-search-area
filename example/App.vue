@@ -9,7 +9,7 @@ export default {
   name: "app",
   data: function () {
     return {
-      result:[],
+      result: [],
       test: [
         {
           key: "printTime",
@@ -43,8 +43,7 @@ export default {
       ],
     };
   },
-  methods: {
-  },
+  methods: {},
   mounted: function () {
   },
 };

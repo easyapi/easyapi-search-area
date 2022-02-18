@@ -1,12 +1,12 @@
 import Vue from 'vue'
-import HeadSearch from '../src/index.js'
+import SearchArea from '../src/index.js'
 import App from './App.vue'
 
-Vue.use(HeadSearch)
+Vue.use(SearchArea)
 
 
 /* eslint-disable no-new */
 new Vue({
-  el: '#app',
-  render: h => (h)(App)
+    el: '#app',
+    render: h => (h)(App)
 })
