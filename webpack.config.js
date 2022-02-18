@@ -13,9 +13,11 @@ config.output = {
   filename: '[name]_[hash].js',
 };
 
-config.devtool = 'inline-source-map';
 config.devServer = {
-  contentBase: './dist'
+  static: {
+    directory: path.join(__dirname, 'dist')
+  },
+  compress: true
 };
 
 config.plugins = config.plugins.concat([
