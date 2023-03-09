@@ -1,8 +1,11 @@
 <template>
-  <div :class="allShow ? 'search-area all-show' : 'search-area'">
-    <el-row>
+  <div
+    :class="allShow ? 'search-area all-show' : 'search-area'"
+    id="searchArea"
+  >
+    <el-row :gutter="20">
       <Item
-        v-for="(item, index) in items"
+        v-for="(item, index) in parameterList"
         :key="index + (item.label || 'a')"
         :item="item"
         v-show="item.show"
@@ -19,7 +22,7 @@
 </template>
 
 <script>
-import Item from "./item.vue";
+import Item from './item.vue'
 
 export default {
   props: {
@@ -34,120 +37,136 @@ export default {
       allShow: false,
       ifShow: false,
       buttons: {
-        type: "buttons",
+        type: 'buttons',
       },
-    };
+      parameterList: [],
+      searchWidth: '',
+    }
   },
   components: { Item },
   created() {},
   mounted() {
-    window.onresize = this.windowResize;
-    let innerWidth = window.innerWidth;
-    this.innerWidth = innerWidth;
-    this.setItems();
+    window.onresize = this.windowResize
+    this.searchWidth = document.getElementById('searchArea').offsetWidth
+    this.setItems()
   },
   methods: {
     windowResize(e) {
-      this.innerWidth = e.target.innerWidth;
-      this.setItems();
+      this.searchWidth = document.getElementById('searchArea').offsetWidth
+      this.setItems()
     },
+
     search() {
-      let obj = {};
+      let obj = {}
       this.items.map((item) => {
         if (item.value) {
-          obj[item.key] = item.value;
+          obj[item.key] = item.value
         }
-      });
-      this.$emit("search", obj);
+      })
+      this.$emit('search', obj)
     },
+
     reset() {
-      let items = this.items;
-      let doms = [];
+      let items = this.parameterList
+      let doms = []
       items.map((item) => {
         if (item.key) {
-          let dom = this.$refs[item.key];
-          doms.push(dom);
+          let dom = this.$refs[item.key]
+          doms.push(dom)
         }
-      });
+      })
       doms.map((item) => {
-        let dom = item[0].$children[0].$children[0];
+        let dom = item[0].$children[0].$children[0]
         if (dom.handleClear) {
-          dom.handleClear();
+          dom.handleClear()
         } else if (dom.reset) {
-          dom.reset();
+          dom.reset()
         }
-      });
+      })
       items.forEach((item) => {
-        item.value = null;
-      });
-      this.items = items;
+        item.value = null
+      })
+      this.parameterList = items
     },
+
     open() {
-      this.allShow = !this.allShow;
-      this.setItems();
+      this.allShow = !this.allShow
+      this.setItems()
     },
-    event(item) {
-      let obj = {};
+
+    event(row) {
+      let obj = {}
       this.items.map((item) => {
-        if (item.value) {
-          obj[item.key] = item.value;
+        if (item.key === row.key) {
+          obj[item.key] = row.value
+          item.value = row.value
         }
-      });
-      this.$emit("event", obj);
+      })
+      this.$emit('event', obj)
     },
+
     setItems() {
-      let { items, innerWidth, buttons } = this;
-      let index = items.findIndex((item) => {
-        return item.type === "buttons";
-      });
-      if (index !== -1) {
-        items.splice(index, 1);
+      let arr = []
+      if (this.allShow) {
+        arr = JSON.parse(JSON.stringify(this.items))
+        arr.push({ type: 'buttons', show: true })
+        this.parameterList = arr
+        return
       }
-      let width = 0;
-      if (innerWidth >= 1600) {
-        items.splice(3, 0, { type: "buttons" });
-        width = 6;
-      } else if (innerWidth >= 992) {
-        items.splice(2, 0, { type: "buttons" });
-        width = 8;
-      } else {
-        items.splice(1, 0, { type: "buttons" });
-        width = 12;
+      if (this.searchWidth >= 1920) {
+        this.items.forEach((item, index) => {
+          if (index < 5) {
+            arr.push(item)
+          }
+        })
+        if (this.items.length > 5) {
+          this.ifShow = true
+        } else {
+          this.ifShow = false
+        }
+      }
+      if (this.searchWidth < 1920 && this.searchWidth >= 1200) {
+        this.items.forEach((item, index) => {
+          if (index < 3) {
+            arr.push(item)
+          }
+        })
+        if (this.items.length > 3) {
+          this.ifShow = true
+        } else {
+          this.ifShow = false
+        }
+      }
+      if (this.searchWidth < 1200 && this.searchWidth >= 992) {
+        this.items.forEach((item, index) => {
+          if (index < 2) {
+            arr.push(item)
+          }
+        })
+        if (this.items.length > 2) {
+          this.ifShow = true
+        } else {
+          this.ifShow = false
+        }
+      }
+      if (this.searchWidth < 992) {
+        this.items.forEach((item, index) => {
+          if (index < 1) {
+            arr.push(item)
+          }
+        })
+        if (this.items.length > 1) {
+          this.ifShow = true
+        } else {
+          this.ifShow = false
+        }
       }
 
-      items.forEach((item, index) => {
-        if (item.size === "large") {
-          let befores = items.slice(0, index);
-          let beforeWidth = befores.reduce((a, b) => {
-            return a + (b.width || width);
-          }, 0);
-          let used = beforeWidth % 24;
-          if (24 - used < 12) {
-            item.width = 24;
-          } else {
-            item.width = 24 - used;
-          }
-        }
-        if (this.allShow) {
-          item.show = true;
-        } else {
-          if (width === 6) {
-            item.show = index <= 3;
-          } else if (width === 8) {
-            item.show = index <= 2;
-          } else {
-            item.show = index <= 1;
-          }
-        }
-      });
-      this.items = items;
-      if (!this.allShow) {
-        this.ifShow =
-          this.items.findIndex((target) => target.show === false) !== -1;
-      }
+      arr.push({ type: 'buttons', show: true })
+      this.parameterList = arr
     },
   },
-};
+}
 </script>
 
 <style scoped>
